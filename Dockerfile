@@ -1,28 +1,33 @@
-# Use OpenJDK 17 as the base image
+# Use OpenJDK 17 as base image
 FROM openjdk:17-jdk-slim
 
-# Set the working directory inside the container
+# Set working directory
 WORKDIR /app
 
-# Copy the Maven wrapper and pom.xml
+# Copy Maven wrapper and pom.xml
+COPY .mvn/ .mvn/
 COPY mvnw .
-COPY .mvn .mvn
 COPY pom.xml .
 
-# Make the Maven wrapper executable
-RUN chmod +x ./mvnw
+# Copy source code
+COPY src/ src/
 
-# Download dependencies (this layer will be cached if pom.xml doesn't change)
-RUN ./mvnw dependency:go-offline -B
-
-# Copy the source code
-COPY src ./src
+# Make Maven wrapper executable
+RUN chmod +x mvnw
 
 # Build the application
-RUN ./mvnw clean package -DskipTests
+RUN ./mvnw clean install -DskipTests
 
-# Expose the port that your app runs on
+# Expose port
 EXPOSE 10000
 
-# Run the jar file
+# Set default environment variables
+ENV SPRING_PROFILES_ACTIVE=prod
+ENV SERVER_PORT=10000
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+  CMD curl -f http://localhost:10000/healthz || exit 1
+
+# Run the application
 CMD ["java", "-jar", "target/ecobazaar-backend-1.0.0.jar"]

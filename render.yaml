@@ -1,0 +1,41 @@
+services:
+  - type: web
+    name: ecobazaar-backend
+    env: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    repo: https://github.com/AkashKeote/Backend-Springboot.git
+    branch: master
+    region: singapore
+    buildCommand: ""
+    startCommand: ""
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
+      - key: SERVER_PORT
+        value: 10000
+      - key: DATABASE_URL
+        fromDatabase:
+          name: ecobazaar-db
+          property: connectionString
+      - key: DB_USERNAME
+        fromDatabase:
+          name: ecobazaar-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: ecobazaar-db
+          property: password
+      - key: JWT_SECRET
+        generateValue: true
+      - key: CORS_ORIGINS
+        value: https://ecobazaar.vercel.app,https://ecobazaar.netlify.app
+    healthCheckPath: /healthz
+    
+databases:
+  - name: ecobazaar-db
+    databaseName: ecobazaar_db
+    user: ecobazaar_user
+    plan: free
+    region: singapore
