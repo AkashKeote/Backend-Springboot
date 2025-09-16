@@ -6,7 +6,7 @@ services:
     dockerfilePath: ./Dockerfile
     dockerContext: .
     repo: https://github.com/AkashKeote/Backend-Springboot.git
-    branch: master
+    branch: main
     region: singapore
     buildCommand: ""
     startCommand: ""
