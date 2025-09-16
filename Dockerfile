@@ -1,5 +1,5 @@
-# Multi-stage build for faster deployment
-FROM openjdk:17-jdk-slim as builder
+# Use Eclipse Temurin (more reliable than openjdk)
+FROM eclipse-temurin:17-jdk-alpine AS builder
 
 # Set working directory
 WORKDIR /app
@@ -21,8 +21,11 @@ COPY src/ src/
 # Build the application
 RUN ./mvnw clean package -DskipTests
 
-# Runtime stage
-FROM openjdk:17-jre-slim
+# Runtime stage - using JRE for smaller image
+FROM eclipse-temurin:17-jre-alpine
+
+# Install curl for health checks
+RUN apk add --no-cache curl
 
 # Set working directory
 WORKDIR /app
@@ -31,16 +34,15 @@ WORKDIR /app
 COPY --from=builder /app/target/ecobazaar-backend-1.0.0.jar app.jar
 
 # Create non-root user for security
-RUN groupadd -r spring && useradd -r -g spring spring
+RUN addgroup -g 1001 -S spring && adduser -u 1001 -S spring -G spring
 RUN chown spring:spring app.jar
 USER spring
 
-# Expose port (Render will override with PORT env var)
+# Expose port
 EXPOSE 10000
 
 # Set default environment variables
 ENV SPRING_PROFILES_ACTIVE=prod
-ENV SERVER_PORT=10000
 
 # Run the application with optimized JVM settings
 CMD ["java", "-Xmx512m", "-Dserver.port=${PORT:-10000}", "-jar", "app.jar"]
