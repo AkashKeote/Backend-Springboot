@@ -30,12 +30,16 @@ RUN apk add --no-cache curl
 # Set working directory
 WORKDIR /app
 
-# Copy the jar from builder stage
+# Copy the jar and startup script from builder stage
 COPY --from=builder /app/target/ecobazaar-backend-1.0.0.jar app.jar
+COPY start.sh .
+
+# Make startup script executable
+RUN chmod +x start.sh
 
 # Create non-root user for security
 RUN addgroup -g 1001 -S spring && adduser -u 1001 -S spring -G spring
-RUN chown spring:spring app.jar
+RUN chown spring:spring app.jar start.sh
 USER spring
 
 # Expose port
@@ -44,5 +48,5 @@ EXPOSE 10000
 # Set default environment variables
 ENV SPRING_PROFILES_ACTIVE=prod
 
-# Run the application with optimized JVM settings
-CMD ["java", "-Xmx512m", "-Dserver.port=${PORT:-10000}", "-jar", "app.jar"]
+# Run the application using startup script
+CMD ["./start.sh"]
