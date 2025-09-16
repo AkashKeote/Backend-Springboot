@@ -8,13 +8,16 @@ services:
     repo: https://github.com/AkashKeote/Backend-Springboot.git
     branch: main
     region: singapore
-    buildCommand: ""
-    startCommand: ""
+    buildFilter:
+      paths:
+        - src/**
+        - pom.xml
+        - Dockerfile
+        - .mvn/**
+        - mvnw
     envVars:
       - key: SPRING_PROFILES_ACTIVE
         value: prod
-      - key: SERVER_PORT
-        value: 10000
       - key: DATABASE_URL
         value: jdbc:mysql://centerbeam.proxy.rlwy.net:36676/railway?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true&connectTimeout=60000&socketTimeout=60000
       - key: DB_USERNAME

@@ -1,0 +1,50 @@
+# .dockerignore - Exclude unnecessary files from Docker build context
+
+# Git
+.git
+.gitignore
+
+# Documentation
+README.md
+*.md
+
+# IDE files
+.vscode/
+.idea/
+*.iml
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Runtime data
+pids
+*.pid
+*.seed
+
+# Coverage directory used by tools like istanbul
+coverage/
+
+# Dependency directories
+node_modules/
+
+# Build outputs (we'll rebuild in container)
+target/
+
+# Docker files
+docker-compose.yml
+Dockerfile
+.dockerignore
+
+# Deployment scripts
+deploy.sh
+deploy.ps1
+railway.toml
+render.yaml
+
+# Environment files
+.env*
