@@ -3,6 +3,23 @@
 -- Eco Challenges, Eco Discounts & Leaderboard
 -- =========================================
 
+-- =========================================
+-- DROP EXISTING TABLES (Fresh Start)
+-- =========================================
+
+-- Drop tables in correct order (foreign keys first)
+DROP TABLE IF EXISTS user_challenge_progress;
+DROP TABLE IF EXISTS user_discount_usage;
+DROP TABLE IF EXISTS carbon_footprint_records;
+DROP TABLE IF EXISTS emission_factors;
+DROP TABLE IF EXISTS eco_challenges;
+DROP TABLE IF EXISTS eco_discounts;
+DROP TABLE IF EXISTS user_eco_profiles;
+
+-- =========================================
+-- CREATE TABLES
+-- =========================================
+
 -- Create eco_challenges table
 CREATE TABLE IF NOT EXISTS eco_challenges (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
