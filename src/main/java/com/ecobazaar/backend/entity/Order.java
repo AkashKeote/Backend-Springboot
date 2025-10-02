@@ -40,6 +40,9 @@ public class Order {
     @Column(name = "discount_amount")
     private Double discountAmount;
     
+    @Column(name = "discount_code")
+    private String discountCode;
+    
     @Column(name = "final_amount", nullable = false)
     private Double finalAmount;
     
@@ -181,6 +184,14 @@ public class Order {
     
     public void setDiscountAmount(Double discountAmount) {
         this.discountAmount = discountAmount;
+    }
+    
+    public String getDiscountCode() {
+        return discountCode;
+    }
+    
+    public void setDiscountCode(String discountCode) {
+        this.discountCode = discountCode;
     }
     
     public Double getFinalAmount() {

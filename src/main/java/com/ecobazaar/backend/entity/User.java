@@ -32,6 +32,12 @@ public class User {
     @Column(name = "is_active")
     private Boolean isActive = true;
     
+    @Column(name = "eco_points")
+    private Integer ecoPoints = 0;
+    
+    @Column(name = "total_carbon_saved")
+    private Double totalCarbonSaved = 0.0;
+    
     @CreationTimestamp
     @Column(name = "created_at")
     private LocalDateTime createdAt;
@@ -106,6 +112,22 @@ public class User {
     
     public void setIsActive(Boolean isActive) {
         this.isActive = isActive;
+    }
+    
+    public Integer getEcoPoints() {
+        return ecoPoints;
+    }
+    
+    public void setEcoPoints(Integer ecoPoints) {
+        this.ecoPoints = ecoPoints;
+    }
+    
+    public Double getTotalCarbonSaved() {
+        return totalCarbonSaved;
+    }
+    
+    public void setTotalCarbonSaved(Double totalCarbonSaved) {
+        this.totalCarbonSaved = totalCarbonSaved;
     }
     
     public LocalDateTime getCreatedAt() {
