@@ -1,4 +1,4 @@
-package com.ecobazaarx.backend.dto;
+package com.ecobazaar.backend.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

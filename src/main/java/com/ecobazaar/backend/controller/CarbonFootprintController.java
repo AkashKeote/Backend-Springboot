@@ -1,8 +1,8 @@
-package com.ecobazaarx.backend.controller;
+package com.ecobazaar.backend.controller;
 
-import com.ecobazaarx.backend.dto.CarbonFootprintRequest;
-import com.ecobazaarx.backend.dto.CarbonFootprintResponse;
-import com.ecobazaarx.backend.service.CarbonFootprintService;
+import com.ecobazaar.backend.dto.CarbonFootprintRequest;
+import com.ecobazaar.backend.dto.CarbonFootprintResponse;
+import com.ecobazaar.backend.service.CarbonFootprintService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

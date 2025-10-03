@@ -42,10 +42,12 @@ public class SecurityConfig {
         configuration.setAllowedOriginPatterns(Arrays.asList(
             "http://localhost:*",
             "http://127.0.0.1:*",
+            "http://localhost:58088",  // Flutter web dev server
             "https://ecobazaar.vercel.app",
             "https://ecobazzarx.web.app",
             "https://ecobazzarx.firebaseapp.com",
-            "https://akashkeote.github.io"
+            "https://akashkeote.github.io",
+            "http://akashkeote.me/EcoBazaarX/"
         ));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("*"));

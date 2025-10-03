@@ -1,4 +1,4 @@
-package com.ecobazaarx.backend.entity;
+package com.ecobazaar.backend.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

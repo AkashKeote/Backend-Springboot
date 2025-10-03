@@ -1,6 +1,6 @@
-package com.ecobazaarx.backend.repository;
+package com.ecobazaar.backend.repository;
 
-import com.ecobazaarx.backend.entity.CarbonFootprintRecord;
+import com.ecobazaar.backend.entity.CarbonFootprintRecord;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

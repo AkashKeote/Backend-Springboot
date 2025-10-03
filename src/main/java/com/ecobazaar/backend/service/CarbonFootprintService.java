@@ -1,11 +1,11 @@
-package com.ecobazaarx.backend.service;
+package com.ecobazaar.backend.service;
 
-import com.ecobazaarx.backend.dto.CarbonFootprintRequest;
-import com.ecobazaarx.backend.dto.CarbonFootprintResponse;
-import com.ecobazaarx.backend.entity.CarbonFootprintRecord;
-import com.ecobazaarx.backend.entity.EmissionFactor;
-import com.ecobazaarx.backend.repository.CarbonFootprintRecordRepository;
-import com.ecobazaarx.backend.repository.EmissionFactorRepository;
+import com.ecobazaar.backend.dto.CarbonFootprintRequest;
+import com.ecobazaar.backend.dto.CarbonFootprintResponse;
+import com.ecobazaar.backend.entity.CarbonFootprintRecord;
+import com.ecobazaar.backend.entity.EmissionFactor;
+import com.ecobazaar.backend.repository.CarbonFootprintRecordRepository;
+import com.ecobazaar.backend.repository.EmissionFactorRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
