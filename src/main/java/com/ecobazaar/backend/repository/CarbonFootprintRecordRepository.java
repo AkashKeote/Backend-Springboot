@@ -108,4 +108,7 @@ public interface CarbonFootprintRecordRepository extends JpaRepository<CarbonFoo
     @Query("SELECT c FROM CarbonFootprintRecord c WHERE c.userId = :userId " +
            "ORDER BY c.calculatedAt DESC")
     List<CarbonFootprintRecord> findRecentByUser(@Param("userId") String userId);
+    
+    // Find by category
+    List<CarbonFootprintRecord> findByCategory(String category);
 }

@@ -565,4 +565,231 @@ public class CarbonFootprintService {
         factor.setDescription("Scientific emission factor for " + name);
         return factor;
     }
+
+    /**
+     * Compare carbon footprint of multiple products
+     */
+    public Map<String, Object> compareProducts(List<String> productIds) {
+        log.info("Comparing {} products", productIds.size());
+        
+        List<Map<String, Object>> products = new ArrayList<>();
+        double lowestFootprint = Double.MAX_VALUE;
+        String bestProduct = "";
+        
+        for (String productId : productIds) {
+            List<CarbonFootprintRecord> records = carbonRecordRepo.findByProductId(productId);
+            
+            if (!records.isEmpty()) {
+                CarbonFootprintRecord latestRecord = records.get(0);
+                
+                Map<String, Object> productData = new HashMap<>();
+                productData.put("productId", latestRecord.getProductId());
+                productData.put("productName", latestRecord.getProductName());
+                productData.put("totalFootprint", latestRecord.getTotalCarbonFootprint());
+                productData.put("ecoRating", latestRecord.getEcoRating());
+                productData.put("carbonSavings", latestRecord.getCarbonSavings());
+                // Note: Breakdown fields not in entity, calculate from total
+                productData.put("totalFootprint", latestRecord.getTotalCarbonFootprint());
+                
+                products.add(productData);
+                
+                if (latestRecord.getTotalCarbonFootprint() < lowestFootprint) {
+                    lowestFootprint = latestRecord.getTotalCarbonFootprint();
+                    bestProduct = latestRecord.getProductName();
+                }
+            }
+        }
+        
+        Map<String, Object> result = new HashMap<>();
+        result.put("products", products);
+        result.put("bestProduct", bestProduct);
+        result.put("lowestFootprint", lowestFootprint);
+        result.put("comparedAt", LocalDateTime.now());
+        
+        return result;
+    }
+
+    /**
+     * Get category benchmark statistics
+     */
+    public Map<String, Object> getCategoryBenchmark(String category) {
+        log.info("Getting benchmark for category: {}", category);
+        
+        List<CarbonFootprintRecord> records = carbonRecordRepo.findByCategory(category);
+        
+        if (records.isEmpty()) {
+            return Map.of(
+                "category", category,
+                "averageFootprint", 0.0,
+                "lowestFootprint", 0.0,
+                "highestFootprint", 0.0,
+                "totalProducts", 0,
+                "message", "No data available for this category"
+            );
+        }
+        
+        DoubleSummaryStatistics stats = records.stream()
+            .mapToDouble(CarbonFootprintRecord::getTotalCarbonFootprint)
+            .summaryStatistics();
+        
+        Map<String, Integer> ecoRatingDistribution = new HashMap<>();
+        records.forEach(r -> {
+            String rating = r.getEcoRating();
+            ecoRatingDistribution.put(rating, ecoRatingDistribution.getOrDefault(rating, 0) + 1);
+        });
+        
+        return Map.of(
+            "category", category,
+            "averageFootprint", stats.getAverage(),
+            "lowestFootprint", stats.getMin(),
+            "highestFootprint", stats.getMax(),
+            "totalProducts", records.size(),
+            "ecoRatingDistribution", ecoRatingDistribution
+        );
+    }
+
+    /**
+     * Get leaderboard of users with lowest carbon footprint
+     */
+    public List<Map<String, Object>> getCarbonLeaderboard(int limit) {
+        log.info("Getting carbon footprint leaderboard, limit: {}", limit);
+        
+        // Get all users and their total carbon footprint
+        List<CarbonFootprintRecord> allRecords = carbonRecordRepo.findAll();
+        
+        Map<String, Double> userTotals = new HashMap<>();
+        Map<String, Integer> userCounts = new HashMap<>();
+        
+        for (CarbonFootprintRecord record : allRecords) {
+            String userId = record.getUserId();
+            userTotals.put(userId, 
+                userTotals.getOrDefault(userId, 0.0) + record.getTotalCarbonFootprint());
+            userCounts.put(userId, 
+                userCounts.getOrDefault(userId, 0) + 1);
+        }
+        
+        // Create leaderboard entries
+        List<Map<String, Object>> leaderboard = new ArrayList<>();
+        
+        userTotals.entrySet().stream()
+            .sorted(Map.Entry.comparingByValue())
+            .limit(limit)
+            .forEach(entry -> {
+                String userId = entry.getKey();
+                double totalFootprint = entry.getValue();
+                int calculationCount = userCounts.get(userId);
+                
+                leaderboard.add(Map.of(
+                    "userId", userId,
+                    "totalCarbonFootprint", totalFootprint,
+                    "calculationCount", calculationCount,
+                    "averagePerProduct", totalFootprint / calculationCount,
+                    "rank", leaderboard.size() + 1
+                ));
+            });
+        
+        return leaderboard;
+    }
+
+    /**
+     * Get all categories with statistics
+     */
+    public List<Map<String, Object>> getAllCategoriesWithStats() {
+        log.info("Getting all categories with statistics");
+        
+        List<CarbonFootprintRecord> allRecords = carbonRecordRepo.findAll();
+        
+        Map<String, List<CarbonFootprintRecord>> categoryRecords = new HashMap<>();
+        
+        for (CarbonFootprintRecord record : allRecords) {
+            String category = record.getCategory();
+            categoryRecords.computeIfAbsent(category, k -> new ArrayList<>()).add(record);
+        }
+        
+        List<Map<String, Object>> categories = new ArrayList<>();
+        
+        for (Map.Entry<String, List<CarbonFootprintRecord>> entry : categoryRecords.entrySet()) {
+            String category = entry.getKey();
+            List<CarbonFootprintRecord> records = entry.getValue();
+            
+            DoubleSummaryStatistics stats = records.stream()
+                .mapToDouble(CarbonFootprintRecord::getTotalCarbonFootprint)
+                .summaryStatistics();
+            
+            categories.add(Map.of(
+                "category", category,
+                "productCount", records.size(),
+                "averageFootprint", stats.getAverage(),
+                "lowestFootprint", stats.getMin(),
+                "highestFootprint", stats.getMax(),
+                "totalFootprint", stats.getSum()
+            ));
+        }
+        
+        // Sort by product count descending
+        categories.sort((a, b) -> 
+            ((Integer) b.get("productCount")).compareTo((Integer) a.get("productCount"))
+        );
+        
+        return categories;
+    }
+
+    /**
+     * Get sustainability tips by category
+     */
+    public List<String> getSustainabilityTipsByCategory(String category) {
+        log.info("Getting sustainability tips for category: {}", category);
+        
+        List<String> tips = new ArrayList<>();
+        
+        switch (category.toLowerCase()) {
+            case "electronics":
+                tips.add("Choose energy-efficient electronics with Energy Star certification");
+                tips.add("Buy refurbished or recycled electronics when possible");
+                tips.add("Properly recycle old electronics to recover valuable materials");
+                tips.add("Use devices in power-saving mode to reduce energy consumption");
+                break;
+                
+            case "clothing":
+            case "fashion":
+                tips.add("Choose organic or recycled fabrics like organic cotton or recycled polyester");
+                tips.add("Buy from local brands to reduce transportation emissions");
+                tips.add("Consider second-hand or vintage clothing");
+                tips.add("Care for clothes properly to extend their lifespan");
+                break;
+                
+            case "food":
+            case "groceries":
+                tips.add("Choose locally sourced and seasonal produce");
+                tips.add("Reduce meat consumption - plant-based alternatives have lower carbon footprint");
+                tips.add("Buy organic products to support sustainable farming");
+                tips.add("Minimize food waste through proper storage and meal planning");
+                break;
+                
+            case "furniture":
+            case "home":
+                tips.add("Choose furniture made from sustainable or recycled materials");
+                tips.add("Buy durable, high-quality items that last longer");
+                tips.add("Consider second-hand furniture or upcycling");
+                tips.add("Look for certifications like FSC for wood products");
+                break;
+                
+            case "beauty":
+            case "cosmetics":
+                tips.add("Choose products with minimal and recyclable packaging");
+                tips.add("Look for organic and cruelty-free certifications");
+                tips.add("Buy refillable products to reduce packaging waste");
+                tips.add("Support brands with sustainable sourcing practices");
+                break;
+                
+            default:
+                tips.add("Choose products with minimal packaging");
+                tips.add("Buy locally made products to reduce transportation emissions");
+                tips.add("Look for recycled or sustainable materials");
+                tips.add("Consider the product's full lifecycle before purchasing");
+                tips.add("Properly dispose of products through recycling or composting");
+        }
+        
+        return tips;
+    }
 }
