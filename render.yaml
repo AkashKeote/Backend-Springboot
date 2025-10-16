@@ -19,11 +19,11 @@ services:
       - key: SPRING_PROFILES_ACTIVE
         value: prod
       - key: DATABASE_URL
-        value: jdbc:mysql://centerbeam.proxy.rlwy.net:36676/railway?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true&connectTimeout=60000&socketTimeout=60000
+        value: jdbc:mysql://shinkansen.proxy.rlwy.net:30782/railway?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true&connectTimeout=60000&socketTimeout=60000
       - key: DB_USERNAME
         value: root
       - key: DB_PASSWORD
-        value: cOkdTzTVvUIwNKaGinyHGFGipGhBqYWr
+        value: lHEORGUeMXiWLOtQjZhNiLwHEXmyEvPq
       - key: JWT_SECRET
         value: ecobazaarX2024SecretKeyForJWTTokenGeneration
       - key: CORS_ORIGINS
