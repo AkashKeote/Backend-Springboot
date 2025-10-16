@@ -1,0 +1,33 @@
+# Railway deployment configuration
+# This file configures your Spring Boot app for Railway deployment
+
+# Build configuration
+[build]
+  builder = "DOCKERFILE"
+  dockerfilePath = "Dockerfile"
+
+# Deploy configuration  
+[deploy]
+  restartPolicyType = "ON_FAILURE"
+  restartPolicyMaxRetries = 3
+  
+# Environment variables for Railway
+[env]
+  SPRING_PROFILES_ACTIVE = "prod"
+  SERVER_PORT = "10000"
+  
+# Database connection (will be overridden by Railway variables)
+  DATABASE_URL = "jdbc:mysql://shinkansen.proxy.rlwy.net:30782/railway?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true&connectTimeout=60000&socketTimeout=60000"
+  DB_USERNAME = "root"
+  DB_PASSWORD = "lHEORGUeMXiWLOtQjZhNiLwHEXmyEvPq"
+  
+# JWT Configuration
+  JWT_SECRET = "ecobazaarX2024SecretKeyForJWTTokenGeneration"
+  
+# CORS Configuration
+  CORS_ORIGINS = "https://ecobazaar.vercel.app,https://ecobazaar.netlify.app"
+
+# Health check
+[healthcheck]
+  path = "/healthz"
+  interval = 30
