@@ -70,7 +70,7 @@ cd frontend
 flutter pub get
 flutter run -d chrome
 ```
-### Backend starts at
+## Backend starts at
 http://localhost:8080
 
 ## 📄 License
