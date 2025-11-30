@@ -53,33 +53,8 @@ Includes product listing, cart management, ordering, and eco-friendly recommenda
 ---
 
 ## 🚀 How to Run the Project
-1️⃣ Clone the Repository
+
+### **1️⃣ Clone the Repository**
+```<language>
 git clone <your-repo-url>
 
-## 2️⃣ Frontend Setup (Flutter)
-cd frontend
-flutter pub get
-flutter run -d chrome
-
-## 3️⃣ Backend Setup (Spring Boot)
-cd backend
-mvn clean install
-mvn spring-boot:run
-
-## Backend starts at:
-
-http://localhost:8080
-
----
-
-## 🔧 Environment Requirements
-
-Flutter SDK 3.x+
-
-Java 17+
-
-Maven 3.8+
-
-MySQL 8+
-
-Git
