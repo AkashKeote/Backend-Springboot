@@ -14,27 +14,27 @@ The project includes a complete e-commerce workflow with authentication, role-ba
 
 Displays carbon impact for products and recommends sustainable alternatives.
 
-# 🌐 Flutter Frontend
+### 🌐 Flutter Frontend
 
 Responsive, mobile-first UI offering smooth navigation and shopping experience.
 
-# 🚀 Spring Boot Backend
+### 🚀 Spring Boot Backend
 
 Secure REST API architecture ensuring scalability and efficient data handling.
 
-# 🗄 MySQL Database
+### 🗄 MySQL Database
 
 Cloud-hosted structured data storage using Railway.
 
-# 🔐 JWT Authentication + RBAC
+### 🔐 JWT Authentication + RBAC
 
 User roles include Admin, Shopkeeper, Customer for secure and organized workflows.
 
-# 📊 Analytics & Dashboards
+### 📊 Analytics & Dashboards
 
 Eco-score tracking, activity analytics, and product impact insights.
 
-# 🛒 Complete E-commerce System
+### 🛒 Complete E-commerce System
 
 Includes product listing, cart management, ordering, and eco-friendly recommendations.
 
