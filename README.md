@@ -58,3 +58,20 @@ Includes product listing, cart management, ordering, and eco-friendly recommenda
 ```<language>
 git clone <your-repo-url>
 
+### **2️⃣ Frontend Setup (Flutter)**
+```<language>
+cd frontend
+flutter pub get
+flutter run -d chrome
+
+### **3️⃣Backend Setup (Spring Boot)**
+```<language>
+cd frontend
+flutter pub get
+flutter run -d chrome
+
+### Backend starts at
+http://localhost:8080
+
+## 📄 License
+This project is licensed under the [MIT License](./LICENSE).
