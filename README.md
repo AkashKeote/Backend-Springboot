@@ -1,4 +1,4 @@
-# 🌱 EcoBazaarX – Carbon Footprint Aware Shopping Assistant
+# 🌱 EcoBazaarX – Carbon Footprint Aware Shopping Assistant (Backend)
 
 ## 👥 Contributors
 
